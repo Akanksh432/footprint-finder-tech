@@ -15,6 +15,10 @@ import {
   KeyRound, HelpCircle, Hash, User, Building2, Copy, EyeOff, Loader2,
   ShieldAlert, ShieldCheck, Sparkles, Eraser, FlaskConical, Activity,
 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { saveScan } from "@/lib/scans-api";
+import { toast } from "sonner";
+import { Link } from "@tanstack/react-router";
 
 const ICON_BY_TYPE: Record<string, React.ComponentType<{ className?: string }>> = {
   Email: Mail,
@@ -267,22 +271,39 @@ export function Scanner({ autoFocus = false }: { autoFocus?: boolean }) {
   const [result, setResult] = useState<ScanResult | null>(null);
   const [hidden, setHidden] = useState<Set<string>>(new Set());
   const [scanning, setScanning] = useState(false);
+  const [saved, setSaved] = useState<string | null>(null);
+  const [saving, setSaving] = useState(false);
   const taRef = useRef<HTMLTextAreaElement>(null);
+  const { user } = useAuth();
 
   useEffect(() => { if (autoFocus) taRef.current?.focus(); }, [autoFocus]);
 
-  const handleScan = () => {
+  const handleScan = async () => {
     if (!text.trim()) return;
     setScanning(true);
     setResult(null);
     setHidden(new Set());
+    setSaved(null);
+    await new Promise((r) => setTimeout(r, 600));
+    const r = scanText(text);
+    setResult(r);
+    setScanning(false);
     setTimeout(() => {
-      setResult(scanText(text));
-      setScanning(false);
-      setTimeout(() => {
-        document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" });
-      }, 80);
-    }, 650);
+      document.getElementById("results")?.scrollIntoView({ behavior: "smooth", block: "start" });
+    }, 80);
+
+    if (user) {
+      setSaving(true);
+      try {
+        const scan = await saveScan(user.id, text, r);
+        setSaved(scan.id);
+        toast.success("Scan saved to your dashboard");
+      } catch (err) {
+        toast.error("Could not save scan", { description: (err as Error).message });
+      } finally {
+        setSaving(false);
+      }
+    }
   };
 
   const visibleFindings = useMemo(
