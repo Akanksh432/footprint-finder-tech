@@ -1,7 +1,16 @@
-import { Link } from "@tanstack/react-router";
-import { Shield } from "lucide-react";
+import { Link, useNavigate } from "@tanstack/react-router";
+import { Shield, LogOut, LayoutDashboard } from "lucide-react";
+import { useAuth, signOut } from "@/hooks/use-auth";
 
 export function Navbar() {
+  const { user, loading } = useAuth();
+  const navigate = useNavigate();
+
+  const handleSignOut = async () => {
+    await signOut();
+    navigate({ to: "/" });
+  };
+
   return (
     <header className="sticky top-0 z-40 backdrop-blur-xl bg-background/70 border-b border-border">
       <div className="mx-auto max-w-7xl px-5 sm:px-8 h-16 flex items-center justify-between">
@@ -19,6 +28,7 @@ export function Navbar() {
             { to: "/", label: "Home" },
             { to: "/scanner", label: "Scanner" },
             { to: "/about", label: "About" },
+            ...(user ? [{ to: "/dashboard", label: "Dashboard" }] : []),
           ].map((l) => (
             <Link
               key={l.to}
@@ -30,12 +40,41 @@ export function Navbar() {
             </Link>
           ))}
         </nav>
-        <Link
-          to="/scanner"
-          className="inline-flex items-center justify-center min-h-11 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors ring-1 ring-neon/20"
-        >
-          Launch Scanner
-        </Link>
+        <div className="flex items-center gap-2">
+          {loading ? (
+            <div className="h-11 w-28 rounded-lg bg-surface animate-pulse" />
+          ) : user ? (
+            <>
+              <Link
+                to="/dashboard"
+                className="hidden sm:inline-flex items-center gap-1.5 min-h-11 px-3 rounded-lg bg-surface border border-border hover:border-neon/40 text-sm"
+              >
+                <LayoutDashboard className="h-3.5 w-3.5" /> Dashboard
+              </Link>
+              <button
+                onClick={handleSignOut}
+                className="inline-flex items-center gap-1.5 min-h-11 px-3 rounded-lg bg-surface border border-border hover:border-neon/40 text-sm"
+              >
+                <LogOut className="h-3.5 w-3.5" /> Sign out
+              </button>
+            </>
+          ) : (
+            <>
+              <Link
+                to="/login"
+                className="hidden sm:inline-flex items-center min-h-11 px-3 rounded-lg text-sm text-muted-foreground hover:text-foreground"
+              >
+                Log in
+              </Link>
+              <Link
+                to="/signup"
+                className="inline-flex items-center justify-center min-h-11 px-4 rounded-lg bg-primary text-primary-foreground text-sm font-medium hover:bg-primary/90 transition-colors ring-1 ring-neon/20"
+              >
+                Get started
+              </Link>
+            </>
+          )}
+        </div>
       </div>
     </header>
   );
@@ -50,26 +89,27 @@ export function Footer() {
             Cyber<span className="text-neon">Oracle</span>
           </div>
           <p className="text-muted-foreground mt-2 max-w-sm">
-            Detect your digital footprint risk before others do. Client-side PII scanning that never sends your data anywhere.
+            Detect your digital footprint risk before others do. Client-side PII scanning that never sends your data anywhere unless you save it.
           </p>
         </div>
         <div>
           <div className="text-foreground font-medium mb-3">Product</div>
           <ul className="space-y-2 text-muted-foreground">
             <li><Link to="/scanner" className="hover:text-foreground">Scanner</Link></li>
+            <li><Link to="/dashboard" className="hover:text-foreground">Dashboard</Link></li>
             <li><Link to="/about" className="hover:text-foreground">About</Link></li>
           </ul>
         </div>
         <div>
-          <div className="text-foreground font-medium mb-3">Legal</div>
+          <div className="text-foreground font-medium mb-3">Account</div>
           <ul className="space-y-2 text-muted-foreground">
-            <li>Privacy</li>
-            <li>Terms</li>
+            <li><Link to="/login" className="hover:text-foreground">Log in</Link></li>
+            <li><Link to="/signup" className="hover:text-foreground">Sign up</Link></li>
           </ul>
         </div>
       </div>
       <div className="border-t border-border py-5 text-center text-xs text-muted-foreground">
-        © {new Date().getFullYear()} CyberOracle — Built for people who treat data like it matters.
+        © {new Date().getFullYear()} CyberOracle
       </div>
     </footer>
   );
