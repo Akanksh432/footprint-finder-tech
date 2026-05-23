@@ -110,8 +110,8 @@ function ScanDetail() {
                     </tr>
                   </thead>
                   <tbody>
-                    {data.findings.map(f => (
-                      <tr key={f.id} className="border-t border-border">
+                    {data.findings.map((f, idx) => (
+                      <tr key={f.id} className={`border-t border-border ${idx % 2 === 1 ? "bg-surface/20" : ""}`}>
                         <td className="px-5 py-3 font-medium">{f.type}</td>
                         <td className="px-5 py-3 font-mono text-xs text-muted-foreground">{f.masked_value}</td>
                         <td className="px-5 py-3 text-xs">{f.category}</td>
