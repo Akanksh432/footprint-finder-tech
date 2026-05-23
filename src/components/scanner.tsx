@@ -15,6 +15,10 @@ import {
   KeyRound, HelpCircle, Hash, User, Building2, Copy, EyeOff, Loader2,
   ShieldAlert, ShieldCheck, Sparkles, Eraser, FlaskConical, Activity,
 } from "lucide-react";
+import { useAuth } from "@/hooks/use-auth";
+import { saveScan } from "@/lib/scans-api";
+import { toast } from "sonner";
+import { Link } from "@tanstack/react-router";
 
 const ICON_BY_TYPE: Record<string, React.ComponentType<{ className?: string }>> = {
   Email: Mail,
