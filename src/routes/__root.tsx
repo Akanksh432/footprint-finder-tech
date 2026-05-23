@@ -7,6 +7,7 @@ import {
   HeadContent,
   Scripts,
 } from "@tanstack/react-router";
+import { Toaster } from "@/components/ui/sonner";
 
 import appCss from "../styles.css?url";
 
@@ -72,16 +73,15 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CyberOracle — Detect your digital footprint risk" },
-      { name: "description", content: "Client-side PII scanner. Paste any text, get a privacy risk score, see what's exposed." },
+      { title: "CyberOracle — Privacy Exposure Simulator" },
+      { name: "description", content: "Client-side PII scanner. Paste any text, get a privacy risk score, see exactly what's exposed — privacy protection for the digital age." },
       { property: "og:type", content: "website" },
+      { property: "og:site_name", content: "CyberOracle" },
       { name: "twitter:card", content: "summary_large_image" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
+      { rel: "stylesheet", href: appCss },
+      { rel: "icon", href: "/favicon.ico" },
     ],
   }),
   shellComponent: RootShell,
@@ -110,6 +110,7 @@ function RootComponent() {
   return (
     <QueryClientProvider client={queryClient}>
       <Outlet />
+      <Toaster theme="dark" position="top-right" richColors />
     </QueryClientProvider>
   );
 }
