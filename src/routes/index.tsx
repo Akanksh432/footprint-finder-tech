@@ -28,9 +28,10 @@ const highlights = [
 ];
 
 const steps = [
-  { icon: ClipboardPaste, title: "Paste text", body: "Resume, JSON, an email thread — anything." },
-  { icon: Activity, title: "Get a risk score", body: "Weighted across four categories of exposure." },
-  { icon: Eye, title: "See what's exposed", body: "Masked findings, positions, and how to fix it." },
+  { icon: ClipboardPaste, title: "Detect", body: "Identity clues + bio text run through 13+ local detectors with confidence scoring." },
+  { icon: Network, title: "Correlate", body: "Signals combine into named attack paths — phishing, SIM-swap, doxxing, recovery abuse." },
+  { icon: Eye, title: "Explain", body: "Every finding shows evidence, why it matters, and how exploitable it actually is." },
+  { icon: Wrench, title: "Fix", body: "A prioritized plan: Fix now, Fix soon, Monitor — ranked by privacy impact." },
 ];
 
 const useCases = [
