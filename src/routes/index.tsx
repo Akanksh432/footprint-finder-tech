@@ -132,9 +132,9 @@ function Landing() {
           <h2 className="font-display mt-2 text-3xl sm:text-4xl font-bold tracking-tight max-w-xl">
             Three steps. No uploads. No drama.
           </h2>
-          <div className="relative mt-12 grid gap-6 md:grid-cols-3">
+          <div className="relative mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {/* Connecting line on desktop */}
-            <div className="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-px bg-gradient-to-r from-transparent via-neon/40 to-transparent pointer-events-none" />
+            <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-neon/40 to-transparent pointer-events-none" />
             {steps.map((s, i) => (
               <div key={s.title} className="relative rounded-2xl bg-card border border-border p-6 card-hover">
                 <span className="absolute -top-3 left-6 inline-flex items-center justify-center h-7 px-2.5 rounded-full bg-primary text-primary-foreground text-xs font-mono font-semibold ring-2 ring-background">
