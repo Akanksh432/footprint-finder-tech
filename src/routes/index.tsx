@@ -28,9 +28,10 @@ const highlights = [
 ];
 
 const steps = [
-  { icon: ClipboardPaste, title: "Paste text", body: "Resume, JSON, an email thread — anything." },
-  { icon: Activity, title: "Get a risk score", body: "Weighted across four categories of exposure." },
-  { icon: Eye, title: "See what's exposed", body: "Masked findings, positions, and how to fix it." },
+  { icon: ClipboardPaste, title: "Detect", body: "Identity clues + bio text run through 13+ local detectors with confidence scoring." },
+  { icon: Network, title: "Correlate", body: "Signals combine into named attack paths — phishing, SIM-swap, doxxing, recovery abuse." },
+  { icon: Eye, title: "Explain", body: "Every finding shows evidence, why it matters, and how exploitable it actually is." },
+  { icon: Wrench, title: "Fix", body: "A prioritized plan: Fix now, Fix soon, Monitor — ranked by privacy impact." },
 ];
 
 const useCases = [
@@ -131,9 +132,9 @@ function Landing() {
           <h2 className="font-display mt-2 text-3xl sm:text-4xl font-bold tracking-tight max-w-xl">
             Three steps. No uploads. No drama.
           </h2>
-          <div className="relative mt-12 grid gap-6 md:grid-cols-3">
+          <div className="relative mt-12 grid gap-6 md:grid-cols-2 lg:grid-cols-4">
             {/* Connecting line on desktop */}
-            <div className="hidden md:block absolute top-12 left-[16.66%] right-[16.66%] h-px bg-gradient-to-r from-transparent via-neon/40 to-transparent pointer-events-none" />
+            <div className="hidden lg:block absolute top-12 left-[12.5%] right-[12.5%] h-px bg-gradient-to-r from-transparent via-neon/40 to-transparent pointer-events-none" />
             {steps.map((s, i) => (
               <div key={s.title} className="relative rounded-2xl bg-card border border-border p-6 card-hover">
                 <span className="absolute -top-3 left-6 inline-flex items-center justify-center h-7 px-2.5 rounded-full bg-primary text-primary-foreground text-xs font-mono font-semibold ring-2 ring-background">
