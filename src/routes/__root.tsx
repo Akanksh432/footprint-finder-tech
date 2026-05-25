@@ -74,11 +74,17 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
     meta: [
       { charSet: "utf-8" },
       { name: "viewport", content: "width=device-width, initial-scale=1" },
-      { title: "CyberOracle — Privacy Exposure Simulator" },
+      { title: "Privacy Exposure Simulator" },
       { name: "description", content: "Client-side PII scanner. Paste any text, get a privacy risk score, see exactly what's exposed — privacy protection for the digital age." },
       { property: "og:type", content: "website" },
       { property: "og:site_name", content: "CyberOracle" },
       { name: "twitter:card", content: "summary_large_image" },
+      { property: "og:title", content: "Privacy Exposure Simulator" },
+      { name: "twitter:title", content: "Privacy Exposure Simulator" },
+      { property: "og:description", content: "Client-side PII scanner. Paste any text, get a privacy risk score, see exactly what's exposed — privacy protection for the digital age." },
+      { name: "twitter:description", content: "Client-side PII scanner. Paste any text, get a privacy risk score, see exactly what's exposed — privacy protection for the digital age." },
+      { property: "og:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9d9274c3-e7ef-4294-910b-da55a9fe64c0/id-preview-a26b590c--bca79c4d-4b3a-4426-aea3-50cff7982cb0.lovable.app-1779710772337.png" },
+      { name: "twitter:image", content: "https://pub-bb2e103a32db4e198524a2e9ed8f35b4.r2.dev/9d9274c3-e7ef-4294-910b-da55a9fe64c0/id-preview-a26b590c--bca79c4d-4b3a-4426-aea3-50cff7982cb0.lovable.app-1779710772337.png" },
     ],
     links: [
       { rel: "stylesheet", href: appCss },
