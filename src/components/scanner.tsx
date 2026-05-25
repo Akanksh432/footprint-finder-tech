@@ -5,6 +5,7 @@ import {
   CATEGORY_META,
   PRIORITY_META,
   scoreColor,
+  generateExternalAttackPaths,
   type ScanResult,
   type Finding,
   type Category,
@@ -16,11 +17,17 @@ import {
   EyeOff, Loader2, ShieldAlert, ShieldCheck, Sparkles, Eraser,
   FlaskConical, Activity, Info, Download, Trash2, FileText, Lightbulb,
   AtSign, GraduationCap, Globe, Target, GitBranch, Wrench, ChevronRight,
-  Fingerprint,
+  Fingerprint, FileJson, FileCode,
 } from "lucide-react";
 import { useAuth } from "@/hooks/use-auth";
 import { saveScan } from "@/lib/scans-api";
 import { toast } from "sonner";
+import {
+  DomainReconCard, BreachCard, UsernamePresenceCard,
+  ModuleStatusGrid, ModuleStatusPills, type ModuleStatuses,
+} from "@/components/osint-results";
+import { runOsintScan, saveOsintResults, type OsintModuleResults } from "@/lib/osint-api";
+import { generateMarkdownReport, downloadFile } from "@/lib/report-generator";
 
 const CATEGORY_ICON: Record<Category, React.ComponentType<{ className?: string }>> = {
   direct: Fingerprint, indirect: MapPin, correlation: Network, social: KeyRound,

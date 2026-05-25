@@ -413,6 +413,84 @@ const PATHS: PathRule[] = [
 ];
 
 // ----------------------------------------------------------------------------
+// External attack paths — generated after OSINT modules return
+// ----------------------------------------------------------------------------
+export interface ExternalContext {
+  subdomainCount?: number;
+  breached?: boolean;
+  emailInBio?: boolean;
+}
+
+export function generateExternalAttackPaths(
+  input: IdentityInput,
+  ctx: ExternalContext = {},
+): AttackPath[] {
+  const out: AttackPath[] = [];
+  const has = (k: keyof IdentityInput) => !!(input[k] && input[k]!.trim());
+
+  const add = (p: AttackPath) => out.push(p);
+
+  if (has("domain") && has("email")) {
+    add({
+      id: "px_domain_email", name: "Corporate email + domain attack surface",
+      description: "Combining a registered domain with a corporate email enables spear-phishing and mail server abuse.",
+      severity: "high", confidence: 85, componentIds: [], componentLabels: ["Domain", "Email"],
+      fix: "Use distinct addresses for WHOIS, public contact, and sensitive logins.",
+    });
+  }
+  if (has("username") && has("email")) {
+    add({
+      id: "px_user_email", name: "Cross-platform identity enumeration",
+      description: "A consistent username + email lets an adversary link accounts across platforms and build a complete profile.",
+      severity: "high", confidence: 80, componentIds: [], componentLabels: ["Username", "Email"],
+      fix: "Use unique handles on sensitive accounts; never reuse your primary email's local-part as a handle.",
+    });
+  }
+  if (has("city") && has("employer") && has("name")) {
+    add({
+      id: "px_loc_emp_name", name: "Physical + organizational targeting vector",
+      description: "Name, employer, and city together enable physical surveillance, tailgating, and LinkedIn social engineering.",
+      severity: "high", confidence: 90, componentIds: [], componentLabels: ["Name", "Employer", "City"],
+      fix: "Decouple name from employer and city in any single public profile.",
+    });
+  }
+  if (has("phone") && has("name") && has("city")) {
+    add({
+      id: "px_simswap_full", name: "SIM-swap and vishing enablement",
+      description: "Phone + name + location gives attackers everything needed to attempt a SIM-swap or voice-phishing call.",
+      severity: "high", confidence: 88, componentIds: [], componentLabels: ["Phone", "Name", "City"],
+      fix: "Add a carrier port-out PIN; mask phone in public profiles.",
+    });
+  }
+  if (has("college") && has("employer") && has("name")) {
+    add({
+      id: "px_alumni", name: "Alumni social engineering vector",
+      description: "Shared college + employer history is a classic pretexting scenario — attackers impersonate recruiters or alumni.",
+      severity: "medium", confidence: 75, componentIds: [], componentLabels: ["Name", "College", "Employer"],
+      fix: "Drop institution names from fully public profiles when employer is also listed.",
+    });
+  }
+  if (has("domain") && (ctx.subdomainCount ?? 0) > 5) {
+    add({
+      id: "px_subdomain", name: "Subdomain attack surface",
+      description: `Domain exposes ${ctx.subdomainCount} subdomains via certificate transparency — broader takeover and enumeration surface.`,
+      severity: "high", confidence: 85, componentIds: [], componentLabels: ["Domain", "Subdomains"],
+      fix: "Audit subdomains, retire unused ones, monitor for new cert issuance.",
+    });
+  }
+  if (ctx.breached && ctx.emailInBio) {
+    add({
+      id: "px_cred_stuff", name: "Credential stuffing risk",
+      description: "A breached email that also appears publicly in a bio signals the same credentials may be reused.",
+      severity: "high", confidence: 90, componentIds: [], componentLabels: ["Email (breached)", "Public bio"],
+      fix: "Rotate passwords on all sites using this address; enable a password manager + 2FA.",
+    });
+  }
+  return out;
+}
+
+
+// ----------------------------------------------------------------------------
 // Public API
 // ----------------------------------------------------------------------------
 export function analyzeIdentity(input: IdentityInput): ScanResult {

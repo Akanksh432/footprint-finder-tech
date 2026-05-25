@@ -90,7 +90,7 @@ export async function saveOsintResults(scanId: string, userId: string, results: 
       user_id: userId,
       module: e.module,
       status: (e.data as { error?: string })?.error ? "failed" : "complete",
-      result_json: e.data as unknown as Record<string, unknown>,
+      result_json: e.data as unknown as never,
       finding_count: e.count,
     })),
   );
