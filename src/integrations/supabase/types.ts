@@ -14,6 +14,41 @@ export type Database = {
   }
   public: {
     Tables: {
+      audit_events: {
+        Row: {
+          created_at: string
+          event_type: string
+          id: string
+          ip_address: string | null
+          metadata: Json | null
+          user_id: string | null
+        }
+        Insert: {
+          created_at?: string
+          event_type: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Update: {
+          created_at?: string
+          event_type?: string
+          id?: string
+          ip_address?: string | null
+          metadata?: Json | null
+          user_id?: string | null
+        }
+        Relationships: [
+          {
+            foreignKeyName: "audit_events_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
       findings: {
         Row: {
           category: string
@@ -61,6 +96,156 @@ export type Database = {
           },
           {
             foreignKeyName: "findings_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investigation_notes: {
+        Row: {
+          content: string
+          created_at: string
+          id: string
+          investigation_id: string
+          note_type: string | null
+          source_scan_id: string | null
+          tags: string[] | null
+          title: string | null
+          user_id: string
+        }
+        Insert: {
+          content: string
+          created_at?: string
+          id?: string
+          investigation_id: string
+          note_type?: string | null
+          source_scan_id?: string | null
+          tags?: string[] | null
+          title?: string | null
+          user_id: string
+        }
+        Update: {
+          content?: string
+          created_at?: string
+          id?: string
+          investigation_id?: string
+          note_type?: string | null
+          source_scan_id?: string | null
+          tags?: string[] | null
+          title?: string | null
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investigation_notes_investigation_id_fkey"
+            columns: ["investigation_id"]
+            isOneToOne: false
+            referencedRelation: "investigations"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investigation_notes_source_scan_id_fkey"
+            columns: ["source_scan_id"]
+            isOneToOne: false
+            referencedRelation: "scans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "investigation_notes_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      investigations: {
+        Row: {
+          created_at: string
+          description: string | null
+          id: string
+          name: string
+          status: string
+          target_summary: string | null
+          updated_at: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name: string
+          status?: string
+          target_summary?: string | null
+          updated_at?: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          description?: string | null
+          id?: string
+          name?: string
+          status?: string
+          target_summary?: string | null
+          updated_at?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "investigations_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      osint_results: {
+        Row: {
+          created_at: string
+          finding_count: number | null
+          id: string
+          module: string
+          result_json: Json | null
+          scan_id: string
+          severity_max: string | null
+          status: string
+          user_id: string
+        }
+        Insert: {
+          created_at?: string
+          finding_count?: number | null
+          id?: string
+          module: string
+          result_json?: Json | null
+          scan_id: string
+          severity_max?: string | null
+          status: string
+          user_id: string
+        }
+        Update: {
+          created_at?: string
+          finding_count?: number | null
+          id?: string
+          module?: string
+          result_json?: Json | null
+          scan_id?: string
+          severity_max?: string | null
+          status?: string
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "osint_results_scan_id_fkey"
+            columns: ["scan_id"]
+            isOneToOne: false
+            referencedRelation: "scans"
+            referencedColumns: ["id"]
+          },
+          {
+            foreignKeyName: "osint_results_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
             referencedRelation: "profiles"
@@ -129,6 +314,35 @@ export type Database = {
             foreignKeyName: "recommendations_user_id_fkey"
             columns: ["user_id"]
             isOneToOne: false
+            referencedRelation: "profiles"
+            referencedColumns: ["id"]
+          },
+        ]
+      }
+      scan_rate_limits: {
+        Row: {
+          last_scan_at: string | null
+          reset_at: string
+          scan_count_today: number
+          user_id: string
+        }
+        Insert: {
+          last_scan_at?: string | null
+          reset_at?: string
+          scan_count_today?: number
+          user_id: string
+        }
+        Update: {
+          last_scan_at?: string | null
+          reset_at?: string
+          scan_count_today?: number
+          user_id?: string
+        }
+        Relationships: [
+          {
+            foreignKeyName: "scan_rate_limits_user_id_fkey"
+            columns: ["user_id"]
+            isOneToOne: true
             referencedRelation: "profiles"
             referencedColumns: ["id"]
           },

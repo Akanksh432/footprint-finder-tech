@@ -9,6 +9,11 @@ const NAV_LINKS = [
   { to: "/about", label: "About" },
 ] as const;
 
+const AUTH_LINKS = [
+  { to: "/dashboard", label: "Dashboard" },
+  { to: "/notebook", label: "Notebook" },
+] as const;
+
 export function Navbar() {
   const { user, loading } = useAuth();
   const navigate = useNavigate();
@@ -36,7 +41,7 @@ export function Navbar() {
         <nav className="hidden md:flex items-center gap-1 text-sm">
           {[
             ...NAV_LINKS,
-            ...(user ? ([{ to: "/dashboard", label: "Dashboard" }] as const) : []),
+            ...(user ? AUTH_LINKS : []),
           ].map((l) => (
             <Link
               key={l.to}
@@ -99,7 +104,7 @@ export function Navbar() {
           <div className="px-5 py-4 flex flex-col gap-1">
             {[
               ...NAV_LINKS,
-              ...(user ? ([{ to: "/dashboard", label: "Dashboard" }, { to: "/account", label: "Account" }] as const) : []),
+              ...(user ? [...AUTH_LINKS, { to: "/account", label: "Account" } as const] : []),
             ].map((l) => (
               <Link
                 key={l.to}

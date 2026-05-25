@@ -8,6 +8,7 @@ import {
   Scripts,
 } from "@tanstack/react-router";
 import { Toaster } from "@/components/ui/sonner";
+import { CosmosBg } from "@/components/cosmos-bg";
 
 import appCss from "../styles.css?url";
 
@@ -109,7 +110,10 @@ function RootComponent() {
 
   return (
     <QueryClientProvider client={queryClient}>
-      <Outlet />
+      <CosmosBg />
+      <div className="relative z-10">
+        <Outlet />
+      </div>
       <Toaster theme="dark" position="top-right" richColors />
     </QueryClientProvider>
   );
